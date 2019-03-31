@@ -1,38 +1,43 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour
+public sealed class PlayerController : MonoBehaviour
 {
+    [SerializeField] private Text countText;
+    [SerializeField] private Text winText;
+    [SerializeField] private float speed;
     private Rigidbody rb;
-    public float speed;
     private int count;
-    public Text countText;
-    public Text winText;
+    private int numPrefabs;
+    private InstantiatePickups script;
 
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
         count = 0;
         SetCountText();
-        winText.text = "";
+        winText.text = string.Empty;
+
+        //I couldn't get the shorthand notation to work, what was I doing dumb?
+        //Is this even a good way to do this? It works, but like...
+        script = GameObject.FindObjectOfType(typeof(InstantiatePickups)) as InstantiatePickups;
+        numPrefabs = script.GetNumPickups();
     }
 
-    void FixedUpdate()
+    private void Update()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
 
-        Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
+        var movement = new Vector3(moveHorizontal, 0, moveVertical);
         rb.AddForce(movement * speed);
 
 
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Pickup"))
+        if (other.gameObject.GetComponent<Pickup>())
         {
             other.gameObject.SetActive(false);
             count++;
@@ -40,10 +45,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void SetCountText()
+    private void SetCountText()
     {
-        countText.text = "Count: " + count.ToString();
-        if (count >= 14)
+        countText.text = $"Count: {count}";
+        if (count >= numPrefabs)
         {
             winText.text = "You win!";
         }

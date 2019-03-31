@@ -1,14 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Rotator : MonoBehaviour
+public sealed class Rotator : MonoBehaviour
 {
-    
+    private Vector3 rotVector;
+
+
+    private void Start()
+    {
+        rotVector = new Vector3(Random.Range(5f, 15f), Random.Range(25f, 35f), Random.Range(40f, 50f));
+        
+    }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        transform.Rotate(new Vector3(15, 30, 45) * Time.deltaTime);
+        transform.Rotate(rotVector * Time.deltaTime);
     }
 }
