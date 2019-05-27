@@ -106,6 +106,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e787c3b00feca1498e2b42be2e53135, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  xVector: {x: 34.455444, y: 165.14851}
+  yVector: {x: 0, y: 52.277237}
+  zVector: {x: 0, y: 45.14852}
 --- !u!54 &2927154039699783094
 Rigidbody:
   m_ObjectHideFlags: 0

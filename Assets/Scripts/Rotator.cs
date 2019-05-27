@@ -2,12 +2,18 @@
 
 public sealed class Rotator : MonoBehaviour
 {
-    private Vector3 rotVector;
+    [SerializeField, MinMaxSlider(0f, 360f)]
+    private Vector2 xVector = Vector2.zero;
+    [SerializeField, MinMaxSlider(0f, 360f)]
+    private Vector2 yVector = Vector2.zero;
+    [SerializeField, MinMaxSlider(0f, 360f)]
+    private Vector2 zVector = Vector2.zero;
 
+    private Vector3 rotVector;
 
     private void Start()
     {
-        rotVector = new Vector3(Random.Range(5f, 15f), Random.Range(25f, 35f), Random.Range(40f, 50f));
+        rotVector = new Vector3(xVector.RandomInRange(), yVector.RandomInRange(), zVector.RandomInRange());
         
     }
 

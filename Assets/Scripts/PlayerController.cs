@@ -3,9 +3,10 @@ using UnityEngine.UI;
 
 public sealed class PlayerController : MonoBehaviour
 {
-    [SerializeField] private Text countText;
-    [SerializeField] private Text winText;
-    [SerializeField] private float speed;
+    [SerializeField] private Text countText = null;
+    [SerializeField] private Text winText = null;
+    [SerializeField] private float speed = 0f;
+ 
     private Rigidbody rb;
     private int count;
     private int numPrefabs;
@@ -17,10 +18,7 @@ public sealed class PlayerController : MonoBehaviour
         count = 0;
         SetCountText();
         winText.text = string.Empty;
-
-        //I couldn't get the shorthand notation to work, what was I doing dumb?
-        //Is this even a good way to do this? It works, but like...
-        script = GameObject.FindObjectOfType(typeof(InstantiatePickups)) as InstantiatePickups;
+        script = Object.FindObjectOfType<InstantiatePickups>();
         numPrefabs = script.GetNumPickups();
     }
 

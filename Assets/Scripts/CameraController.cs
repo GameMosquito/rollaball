@@ -2,17 +2,17 @@
 
 public sealed class CameraController : MonoBehaviour
 {
-    public GameObject player;
+    [SerializeField] private GameObject focus = null;
 
     private Vector3 offset;
 
     private void Start()
     {
-        offset = transform.position - player.transform.position;
+        offset = transform.position - focus.transform.position;
     }
 
     private void LateUpdate()
     {
-        transform.position = player.transform.position + offset;
+        transform.position = focus.transform.position + offset;
     }
 }
