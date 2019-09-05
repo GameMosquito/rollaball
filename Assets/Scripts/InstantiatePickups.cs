@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 
 //TODO: I've given enough editorial options that it's possible (and even easy) to create an inescapable infinite loop at startup.
@@ -12,6 +13,7 @@ public sealed class InstantiatePickups : MonoBehaviour
     [SerializeField, MinMaxSlider(-10f, 10f)] private Vector2 zVector = new Vector2();
     [SerializeField] private float allowableXPositionDifference = 0.5f;
     [SerializeField] private float allowableZPositionDifference = 0.5f;
+    private List<GameObject> LivePrefabs = new List<GameObject>();
 
     private const float JUST_ABOVE_THE_ORIGIN_Y = 0.5f;
     
@@ -25,10 +27,15 @@ public sealed class InstantiatePickups : MonoBehaviour
     // to a prefab already placed by this method. Note that, in this current implementation, pickups not placed by this Start method are not considered when checking positions
     private void Start()
     {
+        Initialize();
+    }
+
+    public void Initialize()
+    {
         var existingPrefabs = new Vector3[numPickups];
 
-        for(int i = 0; i < numPickups; i++)
-        {   
+        for (int i = 0; i < numPickups; i++)
+        {
             //Is this new prefab location already too close to another placed prefab?
             bool tooCloseToAnotherPrefabOfSameType = false;
             //Not yet it's not
@@ -36,10 +43,10 @@ public sealed class InstantiatePickups : MonoBehaviour
             //Now it might be
 
             //We check the position we've randomly selected against the positions of all of the prefabs we've already placed
-            foreach(Vector3 oldVector in existingPrefabs)
-            {   
+            foreach (Vector3 oldVector in existingPrefabs)
+            {
                 //If it's too close on either the x or z axis...
-                if(Mathf.Abs(posVector.x - oldVector.x) <= allowableXPositionDifference && Mathf.Abs(posVector.z - oldVector.z) <= allowableZPositionDifference)
+                if (Mathf.Abs(posVector.x - oldVector.x) <= allowableXPositionDifference && Mathf.Abs(posVector.z - oldVector.z) <= allowableZPositionDifference)
                 {
                     //...We decrement our iterator (so that we won't count this iteration of the loop as successful)...
                     i--;
@@ -60,9 +67,20 @@ public sealed class InstantiatePickups : MonoBehaviour
 
             existingPrefabs[i] = posVector;
             var thisPickup = Instantiate(prefab, posVector, Quaternion.identity);
+            LivePrefabs.Add(thisPickup);
             thisPickup.transform.parent = GameObject.Find("Pickups").transform;
 
         }
+    }
 
+    public void Clear()
+    {
+        
+        foreach(var pickup in LivePrefabs)
+        {
+            Object.Destroy(pickup);
+        }
+
+        LivePrefabs = new List<GameObject>();
     }
 }
