@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿#if (UNITY_EDITOR)
+
+using UnityEngine;
 using UnityEditor;
 
 [CustomPropertyDrawer(typeof(MinMaxSliderAttribute))]
@@ -70,3 +72,5 @@ class MinMaxSliderDrawer : PropertyDrawer
         }
     }
 }
+
+#endif
